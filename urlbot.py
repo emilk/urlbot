@@ -62,7 +62,7 @@ def parsemsg(msg):
                 s.send('PRIVMSG '+info[2]+' :'+title+'\n')
 
 while True:
-    line=s.recv(500)
+    line=s.recv(512)
     print line
     if line.find('Closing Link')!=-1:
         sys.exit(1)
@@ -70,7 +70,7 @@ while True:
         s.send('JOIN '+CHANNELINIT+'\n')
     if line.find('PRIVMSG')!=-1:
         parsemsg(line)
-        line=line.rstrip()
-        line=line.split()
-        if(line[0]=='PING'):
-            s.send('PONG '+line[1]+'\n')
+    line=line.rstrip()
+    line=line.split()
+    if(line[0]=='PING'):
+        s.send('PONG '+line[1]+'\n')
