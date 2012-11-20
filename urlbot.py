@@ -22,7 +22,11 @@ s.send('USER '+IDENT+' '+HOST+' bla :'+REALNAME+'\n')
 def fetchtitle(url):
     inTitle=False
     title=''
-    page = urllib2.urlopen(url)
+    try:
+        page = urllib2.urlopen(url)
+    except urllib2.URLError:
+        return "I'm sorry dave..."
+
     for html in page.readlines():
         match = re.search('\<title.*?\>(.*?)\<\/title\>', html)
         if match:
