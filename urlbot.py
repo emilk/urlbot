@@ -6,6 +6,7 @@ from urlparse import urlparse
 import urllib2
 import re
 import htmllib
+import difflib
 
 HOST='irc.eagle.y.se'
 PORT=6667
@@ -69,7 +70,8 @@ def parsemsg(msg):
         if len(o.netloc)!=0:
             title = fetchtitle(w)
             if len(title)!=0:
-                s.send('PRIVMSG '+info[2]+' :'+title+'\n')
+                if difflib.SequenceMatcher(None, w.lower(), title.lower()).ratio() < 0.4:
+                    s.send('PRIVMSG '+info[2]+' :'+title+'\n')
 
 while True:
     line=s.recv(512)
