@@ -5,6 +5,7 @@ import string
 from urlparse import urlparse
 import urllib2
 import re
+import htmllib
 
 HOST='irc.eagle.y.se'
 PORT=6667
@@ -19,13 +20,21 @@ print s.recv(4096)
 s.send('NICK '+NICK+'\n')
 s.send('USER '+IDENT+' '+HOST+' bla :'+REALNAME+'\n')
 
+def unescape(s):
+    p = htmllib.HTMLParser(None)
+    p.save_bgn()
+    p.feed(s)
+    return p.save_end()
+
 def fetchtitle(url):
     inTitle=False
     title=''
     try:
         page = urllib2.urlopen(url)
-    except urllib2.URLError:
-        return "I'm sorry dave..."
+    except urllib2.URLError, e:
+        print 'Error code: ' + str(e.code)
+        print "I'm sorry dave..."
+        return ""
 
     for html in page.readlines():
         match = re.search('\<title.*?\>(.*?)\<\/title\>', html)
@@ -46,6 +55,7 @@ def fetchtitle(url):
         if inTitle:
             title=title+' '+html
     title=title.strip()
+    title=unescape(title)
     return title
 
 def parsemsg(msg):
