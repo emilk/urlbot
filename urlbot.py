@@ -3,11 +3,11 @@ import sys
 import socket
 import string
 from urlparse import urlparse
-import urllib2
-import re
-import htmllib
 import time
 import urllogger
+import urldescription
+
+desc = urldescription.URLdescription()
 
 HOST='irc.eagle.y.se'
 PORT=6667
@@ -25,44 +25,6 @@ s.send('NICK '+NICK+'\n')
 print int(time.time()),'USER '+IDENT+' '+HOST+' bla :'+REALNAME
 s.send('USER '+IDENT+' '+HOST+' bla :'+REALNAME+'\n')
 
-def unescape(s):
-    p = htmllib.HTMLParser(None)
-    p.save_bgn()
-    p.feed(s)
-    return p.save_end()
-
-def fetchtitle(url):
-    inTitle=False
-    title=''
-    try:
-        page = urllib2.urlopen(url)
-    except urllib2.URLError, e:
-        print int(time.time()),'Error code: ' + str(e.code)
-        print int(time.time()),"I'm sorry dave..."
-        return ""
-
-    for html in page.readlines():
-        match = re.search('\<title.*?\>(.*?)\<\/title\>', html)
-        if match:
-            title=match.group(1)
-            break
-        match = re.search('\<title.*?\>', html)
-        if match:
-            inTitle=True
-        match = re.search('\<title.*?\>(.*?)', html)
-        if match:
-            title=title+match.group(1)
-            continue
-        match = re.search('(.*?)\<\/title\>', html)
-        if match:
-            title=title+match.group(1)
-            break
-        if inTitle:
-            title=title+' '+html
-    title=title.strip()
-    title=unescape(title)
-    return title
-
 def parsemsg(msg):
     complete=msg[1:].split(':',1)
     info=complete[0].split(' ')
@@ -73,9 +35,9 @@ def parsemsg(msg):
         o = urlparse(w)
         if len(o.netloc)!=0:
             print int(time.time()),'checking url '+w.rstrip('\n')
-            title = fetchtitle(w)
+            title = desc.fetchtitle(w)
             if len(title)!=0:
-                urllogger.URLlogger(w.rstrip('\n'), title, sender[0]).start()
+                urllogger.URLlogger(w, title, sender[0]).start()
                 print int(time.time()),'PRIVMSG '+info[2]+' :'+title
                 s.send('PRIVMSG '+info[2]+' :'+title+'\n')
 

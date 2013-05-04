@@ -9,8 +9,8 @@ class URLlogger(threading.Thread):
     def __init__(self, url, text, nick):
         threading.Thread.__init__(self)
         self.setDaemon(True)
-        self.url = url
-        self.text = text
+        self.url = url.strip()
+        self.text = unicode(text, errors='ignore')
         self.nick = nick
         self.con = None
         self.dbname = 'url.db'
