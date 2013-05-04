@@ -7,6 +7,7 @@ import urllib2
 import re
 import htmllib
 import time
+import urllogger
 
 HOST='irc.eagle.y.se'
 PORT=6667
@@ -74,6 +75,7 @@ def parsemsg(msg):
             print int(time.time()),'checking url '+w.rstrip('\n')
             title = fetchtitle(w)
             if len(title)!=0:
+                urllogger.URLlogger(w.rstrip('\n'), title, sender[0]).start()
                 print int(time.time()),'PRIVMSG '+info[2]+' :'+title
                 s.send('PRIVMSG '+info[2]+' :'+title+'\n')
 
