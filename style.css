@@ -1,0 +1,30 @@
+a:link {
+    color: black;
+}
+
+a:visited {
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 10pt;
+    background-color: white;
+    padding-top:31px;
+}
+
+table {
+    padding-left:81px;
+}
+
+h3 {
+    padding-left:50px;
+}

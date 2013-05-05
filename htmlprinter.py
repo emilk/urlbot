@@ -36,7 +36,7 @@ class PrintHTML():
         timestr = str(time.strftime("%H:%M"))
         self.file.write("<tr>\n")
         self.file.write("    <td><p>%s</p></td>\n" % timestr)
-        self.file.write("    <td><p>%s</p></td>\n" % nick)
+        self.file.write("    <td><p>&lt;%s&gt;</p></td>\n" % nick)
         self.file.write("    <td><a href=\"%s\">%s</a></td>\n" % (url, text))
         self.file.write("</tr>\n")
 
@@ -51,7 +51,8 @@ class PrintHTML():
 
     def print_header(self):
         self.file.write("<html>\n")
-        self.file.write("<head><title>collected urls</title></head>\n")
+        self.file.write("<head><title>collected urls</title>\n")
+        self.file.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"></head>\n")
         self.file.write("<body>\n")
 
     def print_footer(self):
