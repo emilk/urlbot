@@ -6,6 +6,7 @@ from urlparse import urlparse
 import time
 import urllogger
 import urldescription
+import re
 
 desc = urldescription.URLdescription()
 
@@ -31,11 +32,13 @@ def parsemsg(msg):
     msgpart=complete[1]
     sender=info[0].split('!')
 
+    msgpart = re.sub(r'[^\x20-\x7e]', '', msgpart)
+
     for w in msgpart.split(' '):
         o = urlparse(w)
         if len(o.netloc)!=0:
-            print int(time.time()),'checking url '+w.rstrip('\n')
-            title = desc.fetchtitle(w)
+            print int(time.time()),'checking url: "'+w.strip()+'"'
+            title = desc.fetchtitle(w.strip())
             if len(title)!=0:
                 urllogger.URLlogger(w, title, sender[0]).start()
                 print int(time.time()),'PRIVMSG '+info[2]+' :'+title

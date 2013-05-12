@@ -45,9 +45,13 @@ class URLdescription():
         try:
             page = urllib2.urlopen(url)
         except urllib2.URLError, e:
+            print int(time.time()),'Error reason: ' + str(e.reason)
+            print int(time.time()),"I'm sorry dave..."
+            return ""
+        except urllib2.HTTPError, e:
             print int(time.time()),'Error code: ' + str(e.code)
             print int(time.time()),"I'm sorry dave..."
-            return url
+            return ""
 
         content_type = page.info()['content-type']
         print "DEBUG: content-type", content_type
