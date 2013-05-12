@@ -47,11 +47,12 @@ class URLdescription():
         except urllib2.URLError, e:
             print int(time.time()),'Error code: ' + str(e.code)
             print int(time.time()),"I'm sorry dave..."
-            return ""
+            return url
 
         content_type = page.info()['content-type']
+        print "DEBUG: content-type", content_type
 
-        match = re.search('text/html', content_type)
+        match = re.search('text/html|application/xhtml\+xml', content_type)
         if match:
             return self.text_html(page)
 
