@@ -42,7 +42,8 @@ def parsemsg(msg):
             if len(title)!=0:
                 urllogger.URLlogger(w, title, sender[0]).start()
                 print int(time.time()),'PRIVMSG '+info[2]+' :'+title
-                s.send('PRIVMSG '+info[2]+' :'+title+'\n')
+                if w.strip() != title:
+                    s.send('PRIVMSG '+info[2]+' :'+title+'\n')
 
 
 timer = time.time()
