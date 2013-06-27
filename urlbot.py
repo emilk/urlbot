@@ -35,9 +35,10 @@ class URLBot():
                 title = self.desc.fetchtitle(w.strip())
                 if len(title)!=0:
                     urllogger.URLlogger(w, title, sender[0]).start()
-                    print int(time.time()),'PRIVMSG '+info[2]+' :'+title
-                    if w.strip() != title:
-                        self.sock.send('PRIVMSG '+info[2]+' :'+title+'\n')
+                    title_decoded = self.desc.unescape(title)  # Remove '&#8226;' etc
+                    print int(time.time()),'PRIVMSG '+info[2]+' :'+title_decoded
+                    if w.strip() != title_decoded:
+                        self.sock.send('PRIVMSG '+info[2]+' :'+title_decoded+'\n')
 
     def run(self):
         readbuffer=''
